@@ -30,7 +30,6 @@ public class MyService extends Service {
                 while (true) {
                     final String text;
                     try {
-
                         int server_port = 5545;
                         byte[] message = new byte[1500];
                         DatagramPacket p = new DatagramPacket(message, message.length);
@@ -39,7 +38,6 @@ public class MyService extends Service {
                         text = new String(message, 0, p.getLength());
                         Log.d("sgk", "message:" + text);
                         senderIp = p.getAddress().toString();
-
                         Handler handler = new Handler(Looper.getMainLooper());
                         handler.post(new Runnable() {
 
@@ -49,14 +47,9 @@ public class MyService extends Service {
                                     pushDataToList(senderIp.substring(1)+":"+text);//MainActivity.msgView.setText(text);
                                 else
                                     MainActivity.notify(senderIp.substring(1), text, getApplicationContext());
-                                /*Toast.makeText(getApplicationContext(),
-                                        text,
-                                        Toast.LENGTH_SHORT).show();*/
                             }
                         });
                         s.close();
-
-                        // msgView.setText(text);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
