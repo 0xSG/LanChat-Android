@@ -59,11 +59,9 @@ public class MyService extends Service {
         }).start();
     }
 
-
     @Override
     public IBinder onBind(Intent intent) {
         //TODO for communication return IBinder implementation
         return null;
     }
-
 }
