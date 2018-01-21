@@ -33,10 +33,10 @@
         android:background="@drawable/bg"
         android:ems="10"
         android:hint="Message"
-        android:textColorHint="#ffff"
         android:inputType="textPersonName"
         android:textAlignment="center"
         android:textColor="@color/fColor"
+        android:textColorHint="#ffff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/sbtnid"
         app:layout_constraintStart_toStartOf="parent" />
@@ -49,15 +49,15 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:background="@drawable/bg"
+        android:digits="0123456789."
         android:ems="10"
         android:hint="IP"
-        android:textColorHint="#ffff"
-        android:inputType="textPersonName"
+        android:inputType="number|numberDecimal|phone"
         android:textAlignment="center"
         android:textColor="@color/fColor"
+        android:textColorHint="#ffff"
         app:layout_constraintBottom_toTopOf="@+id/msgId"
-        app:layout_constraintEnd_toEndOf="@+id/msgId"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toStartOf="@+id/sbtnid"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ListView

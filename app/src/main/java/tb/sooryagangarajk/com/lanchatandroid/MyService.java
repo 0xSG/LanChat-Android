@@ -30,10 +30,12 @@ public class MyService extends Service {
                 while (true) {
                     final String text;
                     try {
+
                         int server_port = 5545;
                         byte[] message = new byte[1500];
                         DatagramPacket p = new DatagramPacket(message, message.length);
                         DatagramSocket s = new DatagramSocket(server_port);
+                        Log.d("sgk", "Going to receive...");
                         s.receive(p);
                         text = new String(message, 0, p.getLength());
                         Log.d("sgk", "message:" + text);
@@ -43,6 +45,7 @@ public class MyService extends Service {
 
                             @Override
                             public void run() {
+                                Log.d("sgk","onCreate"+" GOT:"+text);
                                 if (!MainActivity.isMinimized)
                                     pushDataToList(senderIp.substring(1)+":"+text);//MainActivity.msgView.setText(text);
                                 else

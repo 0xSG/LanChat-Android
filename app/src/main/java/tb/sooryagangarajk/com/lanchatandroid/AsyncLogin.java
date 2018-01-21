@@ -1,20 +1,18 @@
 package tb.sooryagangarajk.com.lanchatandroid;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
-
-
 /**
  * Created by sooryagangarajk on 19/01/18.
  */
 
 public class AsyncLogin extends AsyncTask<String, String, String> {
-
 
     @Override
     protected String doInBackground(String... strings) {
@@ -29,7 +27,10 @@ public class AsyncLogin extends AsyncTask<String, String, String> {
             byte[] message = messageStr.getBytes();
             DatagramPacket p = new DatagramPacket(message, msg_length, local, server_port);
             s.send(p);
-
+            Log.d("sgk", "send" +
+                    new String(message, 0, p.getLength()) +
+                    ":" + p.getAddress().toString() +
+                    ":" + p.getPort());
             s.close();
 
         } catch (IOException e) {
@@ -37,7 +38,6 @@ public class AsyncLogin extends AsyncTask<String, String, String> {
         }
 
         return null;
-
 
     }
 

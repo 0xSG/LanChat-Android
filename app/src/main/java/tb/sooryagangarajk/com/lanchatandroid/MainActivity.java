@@ -52,9 +52,17 @@ public class MainActivity extends AppCompatActivity {
         listView = findViewById(R.id.mylist);
         myIp=(TextView) findViewById(R.id.myipid);
         myContext = getApplicationContext();
-        WifiManager wm = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
-        String ip = Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
-        myIp.setText(ip);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                WifiManager wm = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
+                String ip = null;
+                if (wm != null) {
+                    ip = Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
+                }
+                myIp.setText(ip);
+            }
+        }).start();
 
         notiInt = new Intent(getApplicationContext(), MyService.class);
         getApplicationContext().startService(notiInt);

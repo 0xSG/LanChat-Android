@@ -16,11 +16,14 @@
         android:fontFamily="@font/alfa_slab_one"
         android:textAlignment="textStart"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="@android:color/background_dark"
+        android:textColor="#fff"
         android:textSize="18sp"
+
+        android:background="@color/theme"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="start" />
 
 </android.support.constraint.ConstraintLayout>
