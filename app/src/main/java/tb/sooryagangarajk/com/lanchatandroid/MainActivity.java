@@ -4,9 +4,11 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.format.Formatter;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -25,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     public static Button sendButton;
     public static Intent notiInt = null;
     public static ListView listView;
+    public static TextView myIp;
     public static Context myContext;
     public static ArrayAdapter<String> stringArrayAdapter;
     public static ArrayList<String> arrayList;
@@ -47,7 +50,11 @@ public class MainActivity extends AppCompatActivity {
         msgGot = findViewById(R.id.msgId);
         sendButton = findViewById(R.id.sbtnid);
         listView = findViewById(R.id.mylist);
+        myIp=(TextView) findViewById(R.id.myipid);
         myContext = getApplicationContext();
+        WifiManager wm = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
+        String ip = Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
+        myIp.setText(ip);
 
         notiInt = new Intent(getApplicationContext(), MyService.class);
         getApplicationContext().startService(notiInt);
