@@ -2,15 +2,19 @@ package tb.sooryagangarajk.com.lanchatandroid;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
-import android.util.Log;
+
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 
+import static tb.sooryagangarajk.com.lanchatandroid.MainActivity.ip;
+import static tb.sooryagangarajk.com.lanchatandroid.MainActivity.mFirebaseAnalytics;
 import static tb.sooryagangarajk.com.lanchatandroid.MainActivity.pushDataToList;
 
 /**
@@ -35,19 +39,25 @@ public class MyService extends Service {
                         byte[] message = new byte[1500];
                         DatagramPacket p = new DatagramPacket(message, message.length);
                         DatagramSocket s = new DatagramSocket(server_port);
-                        Log.d("sgk", "Going to receive...");
+
                         s.receive(p);
                         text = new String(message, 0, p.getLength());
-                        Log.d("sgk", "message:" + text);
+
                         senderIp = p.getAddress().toString();
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString("Device", ip);
+                        bundle.putString("msg", text);
+                        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+
                         Handler handler = new Handler(Looper.getMainLooper());
                         handler.post(new Runnable() {
 
                             @Override
                             public void run() {
-                                Log.d("sgk","onCreate"+" GOT:"+text);
+
                                 if (!MainActivity.isMinimized)
-                                    pushDataToList(senderIp.substring(1)+":"+text);//MainActivity.msgView.setText(text);
+                                    pushDataToList(senderIp.substring(1) + ":" + text);//MainActivity.msgView.setText(text);
                                 else
                                     MainActivity.notify(senderIp.substring(1), text, getApplicationContext());
                             }

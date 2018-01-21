@@ -27,10 +27,7 @@ public class AsyncLogin extends AsyncTask<String, String, String> {
             byte[] message = messageStr.getBytes();
             DatagramPacket p = new DatagramPacket(message, msg_length, local, server_port);
             s.send(p);
-            Log.d("sgk", "send" +
-                    new String(message, 0, p.getLength()) +
-                    ":" + p.getAddress().toString() +
-                    ":" + p.getPort());
+
             s.close();
 
         } catch (IOException e) {

@@ -17,6 +17,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -31,12 +33,12 @@ public class MainActivity extends AppCompatActivity {
     public static Context myContext;
     public static ArrayAdapter<String> stringArrayAdapter;
     public static ArrayList<String> arrayList;
-
+    public static FirebaseAnalytics mFirebaseAnalytics;
+    public static String ip = null;
 
     @Override
     protected void onResume() {
         isMinimized = false;
-
 
         super.onResume();
     }
@@ -46,17 +48,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
         ipGot = findViewById(R.id.ipId);
         msgGot = findViewById(R.id.msgId);
         sendButton = findViewById(R.id.sbtnid);
         listView = findViewById(R.id.mylist);
-        myIp=(TextView) findViewById(R.id.myipid);
+        myIp = (TextView) findViewById(R.id.myipid);
         myContext = getApplicationContext();
+
         new Thread(new Runnable() {
             @Override
             public void run() {
                 WifiManager wm = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
-                String ip = null;
+                ip = null;
                 if (wm != null) {
                     ip = Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
                 }
@@ -83,12 +88,19 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 AsyncLogin obj = new AsyncLogin();
                 obj.execute();
+
+                Bundle bundle = new Bundle();
+                bundle.putString("Device", ip);
+                bundle.putString("msg", msgGot.getText().toString());
+                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+
                 pushDataToList("You:" + msgGot.getText().toString());
             }
         });
     }
 
     public static void pushDataToList(String s) {
+
         arrayList.add(s);
         listView.setAdapter(stringArrayAdapter);
     }
@@ -99,8 +111,8 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
     }
 
-
     public static void notify(String nIp, String nMsg, Context context) {
+
         pushDataToList(nIp + ":" + nMsg);
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context)
@@ -111,6 +123,5 @@ public class MainActivity extends AppCompatActivity {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(1, mBuilder.build());
     }
-
 
 }
