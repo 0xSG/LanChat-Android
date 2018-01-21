@@ -6,5 +6,5 @@ LanChat Application for android. Using this application we can chat with other d
 * And also we can give the receiver.
 
 
-#### [TRY ( APK )](https://github.com/0xpulsar/LanChat-Android/raw/master/app-release.apk)
+#### [TRY ( APK )](https://github.com/0xpulsar/LanChat-Android/raw/master/LanChatAndroid.apk)
 ### [//// S G K ////](http://sgkcreations.blogspot.in)
