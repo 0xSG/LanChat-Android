@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.Formatter;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -35,11 +36,14 @@ public class MainActivity extends AppCompatActivity {
     public static ArrayList<String> arrayList;
     public static FirebaseAnalytics mFirebaseAnalytics;
     public static String ip = null;
+    public static DatabaseHandler db;
+
+
 
     @Override
     protected void onResume() {
         isMinimized = false;
-
+        Log.d("sgk","onResume called");
         super.onResume();
     }
 
@@ -47,6 +51,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+         db = new DatabaseHandler(this);
+        Log.d("sgk","onCreate called");
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
@@ -56,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
         listView = findViewById(R.id.mylist);
         myIp = (TextView) findViewById(R.id.myipid);
         myContext = getApplicationContext();
+
+
 
         new Thread(new Runnable() {
             @Override
@@ -74,8 +84,13 @@ public class MainActivity extends AppCompatActivity {
 
         arrayList = new ArrayList<String>();
 
-        stringArrayAdapter = new ArrayAdapter<String>(myContext, R.layout.custom_row, R.id.textView, arrayList);
+        if(db.isDBHaveData()){
+            arrayList=db.getAllData();
+            Log.d("sgk","isDBHaveData called restored data"+arrayList);
 
+        }
+        stringArrayAdapter = new ArrayAdapter<String>(myContext, R.layout.custom_row, R.id.textView, arrayList);
+        listView.setAdapter(stringArrayAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -100,13 +115,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static void pushDataToList(String s) {
-
+        db.addData(s);
         arrayList.add(s);
         listView.setAdapter(stringArrayAdapter);
     }
 
     @Override
     protected void onPause() {
+        Log.d("sgk","onPause called");
         isMinimized = true;
         super.onPause();
     }
